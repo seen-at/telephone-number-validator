@@ -1,0 +1,50 @@
+function telephoneCheck(str) {
+  if(str.indexOf("(") === -1 && str.indexOf(")") > 0) return false;
+  if(str.indexOf(")") - str.indexOf("(") > 4) return false;
+  if(str[0] === "-") return false;
+  if(str.indexOf(" ") === 2) return false;
+
+  let polishedPhone = str.replace(/ |-/g, "")
+
+  if(polishedPhone.indexOf("(") < polishedPhone.indexOf(")")) {
+    polishedPhone = polishedPhone.replace(/\(|\)/g, "")
+  }
+  if(polishedPhone.length === 10) return true; 
+  else if(polishedPhone.length === 11 && polishedPhone[0] === "1" ) {
+    return true;
+  }
+  
+  return false;
+}
+
+console.log(telephoneCheck("55 55-55-555-5"));
+
+// using regex loop
+
+function telephoneCheck(str) {
+  const validPatterns = [
+    // 555-555-5555
+    /^\d{3}-\d{3}-\d{4}$/,
+
+    // 1 555-555-5555
+    /^1 \d{3}-\d{3}-\d{4}$/,
+
+    // 1 (555) 555-5555
+    /^1 \(\d{3}\) \d{3}-\d{4}$/,
+
+    // 5555555555
+    /^\d{10}$/,
+
+    // (555)555-5555
+    /^\(\d{3}\)\d{3}-\d{4}$/,
+
+    // 1(555)555-5555
+    /^1\(\d{3}\)\d{3}-\d{4}$/,
+
+    // 1 555 555 5555
+    /^1 \d{3} \d{3} \d{4}$/, 
+  ] 
+  return validPatterns.some((patterns) => patterns.test(str));
+}
+
+telephoneCheck("555-555-5555");
